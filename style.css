@@ -1,14 +1,251 @@
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
+/* New Styling */
 canvas {
   position: fixed;
   top: 0;
   left: 0;
 }
+
+main{
+  position: absolute;
+}
+
+/* Old Styling imported from the portfolio site */
+
+/* How to use font families:
+font-family: 'League Spartan', sans-serif;
+font-family: 'Poppins', sans-serif;
+font-family: 'Sacramento', cursive; */
+/* Pallet
+ #62D2A2
+ #9DF3C4
+ #1FAB89
+ #1da1f2
+ */
+/* GLobal properties */
+:root {
+  --resting-high-button: 1rem;
+  --resting-low-button: 0;
+  --hover-high-button: 0.6rem;
+  --hover-low-button: 0.4rem;
+}
+
+body {
+  font-family: "League Spartan";
+  text-align: center;
+}
+
+h1, h3, h4, h5, h6 {
+  line-height: 1.5;
+  font-family: "Poppins";
+  font-weight: bold;
+}
+
+h2 {
+  margin-top: 0.8rem;
+  margin-bottom: 0;
+}
+
+section>h1 {
+  padding-top: 3rem;
+}
+
+.title {
+  font-size: 2.5rem;
+}
+
+p {
+  font-size: 1.4rem;
+  line-height: 1.5;
+  margin-top: 1.5rem
+}
+
+.container-fluid {
+  padding: 7% 15% 13%;
+}
+
+.gradient-background {
+  background-image: linear-gradient(to top right, #62D2A2, #9DF3C4);
+}
+
+.promo {
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 87%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 87%, 0 100%);
+}
+
+/* Modifying color angles for smaller screens */
+
+@media only screen and (max-width: 1000px){
+  .promo {
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
+  }
+}
+
+
+
+/* Fade in on scroll effect */
+.load {
+  opacity: 0;
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+  will-change: opacity, transform;
+}
+
+.load-left, h1.load {
+  transform: translateX(-2rem);
+}
+
+.load-right {
+  transform: translateX(2rem);
+}
+
+.load.row {
+  transform: translateY(2rem);
+}
+
+.load.loaded {
+  opacity: 1;
+  transform: none;
+}
+
+/* Navbar */
+#nav-id .container-fluid {
+  padding: 0 15%;
+}
+
+.navbar-brand {
+  font-family: "Sacramento";
+  font-size: 2.0rem;
+  text-transform: capitalize;
+}
+
+.nav-item {
+  padding: 0 0.6rem;
+}
+
+.nav-link {
+  font-size: 1.0rem;
+}
+
+/* For navbar scrolling effect */
+.nav-scroll-down {
+  transform: translateY(-100%);
+  background-color: #1FAB89;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-scroll-up {
+  transform: translateY(0);
+  background-color: #1FAB89;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Home section */
+.special-btn {
+  margin-top: var(--resting-high-button);
+  text-align: left;
+  will-change: transform;
+  border-radius: 20%;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+/* Button animations */
+.resume-btn .btn {
+  width: 12rem;
+  background-color: white;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.btn:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
+.btn:hover {
+  animation-name: moveUp;
+  animation-duration: 0.4s;
+  margin-top: var(--hover-high-button);
+  margin-bottom: var(--hover-low-button);
+}
+
+.btn:not(:hover) {
+  animation-name: moveDown;
+  animation-duration: 0.4s;
+  margin-top: var(--resting-high-button);
+  margin-bottom: var(--resting-low-button);
+}
+
+@keyframes moveUp {
+  from {
+    margin-top: var(--resting-high-button);
+    margin-bottom: var(--resting-low-button);
+  }
+
+  to {
+    margin-top: var(--hover-high-button);
+    margin-bottom: var(--hover-low-button);
+  }
+}
+
+@keyframes moveDown {
+  from {
+    margin-top: var(--hover-high-button);
+    margin-bottom: var(--hover-low-button);
+  }
+
+  to {
+    margin-top: var(--resting-high-button);
+    margin-bottom: var(--resting-low-button);
+  }
+}
+
+.icon-button {
+  background-color: white;
+}
+
+.fa-brands, .fa-duotone, .fa-solid {
+  position: absolute;
+}
+
+.fa-file {
+  position: relative;
+  right: 0.21rem;
+}
+
+.fa-linkedin {
+  color: #1da1f2;
+  right: 0.3rem;
+  bottom: 1.1rem;
+}
+
+.fa-github {
+  right: 0.21rem;
+  bottom: 1.1rem;
+}
+
+.fa-code {
+  color: #003E54;
+  right: 0.25rem;
+  bottom: 1.1rem;
+}
+
+.ic-leetcode {
+  right: 0.16rem;
+  bottom: 0.17rem;
+}
+
+/* Card selectors */
+.card-text {
+  text-align: left;
+}
+
+.card-title {
+  color: #1FAB89;
+}
+
+.card-header {
+  color: white;
+  font-size: 1.7rem;
+}
+
+
