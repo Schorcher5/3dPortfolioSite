@@ -59,7 +59,7 @@ section>h1 {
 }
 
 p {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   line-height: 1.5;
   margin-top: 1.5rem
 }
@@ -240,6 +240,11 @@ p {
 }
 
 /* Card selectors */
+
+.card {
+  margin-top: 1rem;
+}
+
 .card-text {
   text-align: left;
 }
