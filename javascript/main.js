@@ -3,9 +3,9 @@ import '../css/style.css'
 import * as THREE from 'three';
 import { MathUtils } from 'three';
 
-import Stats from '.jsm/libs/stats.module.js';
-import { GUI } from './jsm/libs/lil-gui.module.min.js';
-import { OrbitControls } from './jsm/controls/OrbitControls.js';
+import Stats from 'three/examples/jsm/libs/stats.module.js';
+import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 document.addEventListener("DOMContentLoaded", function () {
   // Set up for the basic scene, camera and renderer
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
   //Set up for the electric lights
 
   let group, container, stats , positions, colors, 
-  particles, pointCLoud, particlePositions, linesMesh;
+  particles, pointCloud, particlePositions, linesMesh;
   const particlesData = [];
   
   const maxParticleCount = 1000;
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const gui = new GUI();
     
     gui.add(effectController, 'showDots').onChange((value) =>{
-      pointCLoud.visible = value;
+      pointCloud.visible = value;
     });
 
     gui.add(effectController, 'showLines').onChange((value) => {
@@ -132,9 +132,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     linesMesh = new THREE.LineSegments(geometry, material);
-    group.add(lineMesh);
+    group.add(linesMesh);
 
-    container.appendChild(renderer.domElement);
+    
 
     stats = new Stats();
     container.appendChild(stats.dom);
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
       new THREE.MeshStandardMaterial({color:0xffffff})
     );
   
-    const [x,y,z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(100));
+    const [x,y,z] = Array(3).fill().map(() => MathUtils.randFloatSpread(100));
   
     star.position.set(x,y,z);
     scene.add(star);
