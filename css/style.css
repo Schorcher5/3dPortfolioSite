@@ -21,10 +21,7 @@ font-family: 'League Spartan', sans-serif;
 font-family: 'Poppins', sans-serif;
 font-family: 'Sacramento', cursive; */
 /* Pallet
- #62D2A2
- #9DF3C4
- #1FAB89
- #1da1f2
+  
  */
 /* GLobal properties */
 :root {
@@ -69,22 +66,22 @@ p {
 }
 
 .gradient-background {
-  background-image: linear-gradient(to top right, #62D2A2, #9DF3C4);
+/* background-image: linear-gradient(to top right, #62D2A2, #9DF3C4); */
 }
 
 .promo {
-  -webkit-clip-path: polygon(0 0, 100% 0, 100% 87%, 0 100%);
-  clip-path: polygon(0 0, 100% 0, 100% 87%, 0 100%);
+  /* -webkit-clip-path: polygon(0 0, 100% 0, 100% 87%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 87%, 0 100%); */
 }
 
 /* Modifying color angles for smaller screens */
 
-@media only screen and (max-width: 1000px){
+/* @media only screen and (max-width: 1000px){
   .promo {
     -webkit-clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
     clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
   }
-}
+} */
 
 
 
@@ -134,13 +131,13 @@ p {
 /* For navbar scrolling effect */
 .nav-scroll-down {
   transform: translateY(-100%);
-  background-color: #1FAB89;
+  background-color: #096f5663;
   transition: all 0.3s ease-in-out;
 }
 
 .nav-scroll-up {
   transform: translateY(0);
-  background-color: #1FAB89;
+  background-color: #096f5663;
   transition: all 0.3s ease-in-out;
 }
 
@@ -250,7 +247,7 @@ p {
 }
 
 .card-title {
-  color: #1FAB89;
+  color: #16c7a170;
 }
 
 .card-header {
