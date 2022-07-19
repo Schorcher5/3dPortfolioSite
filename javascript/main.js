@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showLines: true,
     minDistance: 150,
     limitConnections: false,
-    maxConnection: 20,
+    maxConnections: 20,
     particleCount: 500
   }
 
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     gui.add(effectController, 'minDistance', 10, 300);
     gui.add(effectController, 'limitConnections');
-    gui.add(effectController, 'maxConnections', 0, 30, 1);
+    gui.add( effectController, 'maxConnections', 0, 30, 1 );
     gui.add(effectController, 'particleCount', 0, maxParticleCount, 1).onChange((value) => {
       particleCount = parseInt(value);
       particles.setDrawRange(0, particleCount);
