@@ -138,6 +138,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     stats = new Stats();
     container.appendChild(stats.dom);
+
+    //Re-adjusts the canvas size according to changes in the viewport
+
+    window.addEventListener('resize', () =>{
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+  
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
     
 
 
@@ -158,6 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const ambientLight = new THREE.AmbientLight(0xffffff);
   
   scene.add(pointLight, ambientLight);
+  
   
 
   //Adding Stars to the scene in random places
@@ -189,12 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
   initLines();
 
-  window.addEventListener('resize', () =>{
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
+  
 
   animate();
   
