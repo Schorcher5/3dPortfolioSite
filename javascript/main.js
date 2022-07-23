@@ -188,6 +188,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //Animation loop where the rendering take place
   function animate(){
+
+    // line animation
+
+    let vertexPosition = 0;
+    let colorPosition = 0;
+    let numberOfConnected = 0;
+
+    for( let i =0; i<particleCount; i++){
+      particlesData[i].numConnections = 0;
+    }
+
+    for( let i = 0; i< particleCount; i++){
+      const particleData = particlesData[i];
+
+      particlePositions[i*3] += particleData.velocity.x;
+      particlePositions[i*3 + 1] += particleData.velocity.y;
+      particlePositions[i*3 + 2] += particleData.velocity.z;
+
+      if (particlePositions[i*3 + 1] < -rHalf  || particlePositions[i*3 + 1] > rHalf)
+        particleData.velocity.y *= -1;
+
+      if (particlePositions[i*3] < -rHalf  || particlePositions[i*3] > rHalf)
+        particleData.velocity.x *= -1;
+
+      if (particlePositions[i*3 + 2] < -rHalf  || particlePositions[i*3 + 2] > rHalf)
+        particleData.velocity.z *= -1;
+
+      if (effectController.limitConnections && particleData.numConnections >= effectController.maxConnections) continue;
+
+    }
+
+
+
+    // Torus animation
     requestAnimationFrame(animate);
   
     torus.rotation.x += 0.01;
