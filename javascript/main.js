@@ -236,13 +236,41 @@ document.addEventListener("DOMContentLoaded", function () {
         
         if(dist < effectController.minDistance) {
 
+          particleData.numConnections++;
+          particleDataBase.numConnections++;
+
+          const alpha = 1.0 - distance/effectController.minDistance;
+
+          positions[ vertexPosition++ ] = particlePositions[ i * 3 ];
+          positions[ vertexPosition++ ] = particlePositions[ i * 3 + 1 ];
+          positions[ vertexPosition++ ] = particlePositions[ i * 3 + 2 ];
+
+          positions[ vertexPosition++ ] = particlePositions[ j * 3 ];
+          positions[ vertexPosition++ ] = particlePositions[ j * 3 + 1 ];
+          positions[ vertexPosition++ ] = particlePositions[ j * 3 + 2 ];
+
+          colors[ colorPosition++ ] = alpha;
+          colors[ colorPosition++ ] = alpha;
+          colors[ colorpos ++ ] = alpha;
+
+          colors[ colorPosition++ ] = alpha;
+          colors[ colorPosition++ ] = alpha;
+          colors[ colorPosition++ ] = alpha;
+
+          numberOfConnected++;
+
+
           
         }
       }
 
     }
 
+    linesMesh.geometry.setDrawRange(0, numberOfConnected*2);
+    linesMesh.geometry.attributes.position.needsUpdate = true;
+    linesMesh.geometry.attributes.color.needsUpdate = true;
 
+    pointCloud.geometry.attributes.position.needsUpdate = true;
 
     // Torus animation
     requestAnimationFrame(animate);
@@ -251,6 +279,11 @@ document.addEventListener("DOMContentLoaded", function () {
     torus.rotation.y += 0.005;
     torus.rotation.z += 0.01;
   
+
+    // Rotate group list
+
+    group.rotation.y = Date.now() * 0.0001;
+
     renderer.render(scene ,camera);
   }
   
