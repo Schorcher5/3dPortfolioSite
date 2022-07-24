@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded",function(){
   if(hideOnScroll){
     var lastScrollTop = 0;
 
-    window.addEventListener('scroll',function(){
+    window.addEventListener('scroll',() => {
+    
       let scrollTop = window.scrollY;
       if(scrollTop < lastScrollTop){
         hideOnScroll.classList.remove('nav-scroll-down');
@@ -15,3 +16,4 @@ document.addEventListener("DOMContentLoaded",function(){
     });
   }
 });
+
