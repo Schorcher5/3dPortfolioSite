@@ -194,11 +194,15 @@ document.addEventListener("DOMContentLoaded", function () {
     let vertexPosition = 0;
     let colorPosition = 0;
     let numberOfConnected = 0;
+    
+    // Reset number of connections back to 0;
 
     for( let i =0; i<particleCount; i++){
       particlesData[i].numConnections = 0;
     }
 
+
+    //Set up new positions of lines through steps that are based on their particle data and where they sit in relation to the radius (+-400, half of radius)
     for( let i = 0; i< particleCount; i++){
       const particleData = particlesData[i];
 
@@ -206,6 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
       particlePositions[i*3 + 1] += particleData.velocity.y;
       particlePositions[i*3 + 2] += particleData.velocity.z;
 
+      // Switching step magnitude if they cross the min/max range (+- 400) set by half the radius
       if (particlePositions[i*3 + 1] < -rHalf  || particlePositions[i*3 + 1] > rHalf)
         particleData.velocity.y *= -1;
 
@@ -216,6 +221,24 @@ document.addEventListener("DOMContentLoaded", function () {
         particleData.velocity.z *= -1;
 
       if (effectController.limitConnections && particleData.numConnections >= effectController.maxConnections) continue;
+
+
+      for( let j = i+ 1; j<particleCount; j++){
+
+        const particleDataBase = particlesData[j];
+
+        if (effectController.limitConnections && particleDataBase.numConnections >= effectController.maxConnections) continue;
+
+        const dx = particlePositions[i*3] - particlePositions[j*3];
+        const dy = particlePositions[i*3 + 1] - particlePositions[j*3 + 1];
+        const dz = particlePositions[i*3 + 2] - particlePositions[j*3 + 2];
+        const distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+        
+        if(dist < effectController.minDistance) {
+
+          
+        }
+      }
 
     }
 
