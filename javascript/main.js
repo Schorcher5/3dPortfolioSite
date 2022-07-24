@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           colors[ colorPosition++ ] = alpha;
           colors[ colorPosition++ ] = alpha;
-          colors[ colorpos ++ ] = alpha;
+          colors[ colorPosition++ ] = alpha;
 
           colors[ colorPosition++ ] = alpha;
           colors[ colorPosition++ ] = alpha;
