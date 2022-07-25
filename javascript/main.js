@@ -170,17 +170,17 @@ document.addEventListener("DOMContentLoaded", function () {
   //Adding Stars to the scene in random places
   function addStars() {
     const star = new THREE.Mesh(
-      new THREE.SphereGeometry(0.25,24,24),
-      new THREE.MeshStandardMaterial({color:0xffffff})
+      new THREE.SphereGeometry(0.25,1,1),
+      new THREE.MeshStandardMaterial({color:0x14B1AB})
     );
   
-    const [x,y,z] = Array(3).fill().map(() => MathUtils.randFloatSpread(100));
+    const [x,y,z] = Array(3).fill().map(() => MathUtils.randFloatSpread(1000));
   
     star.position.set(x,y,z);
     scene.add(star);
   }
   
-  Array(200).fill().forEach(addStars);
+  Array(5000).fill().forEach(addStars);
   
 
   //Animation loop where the rendering take place
