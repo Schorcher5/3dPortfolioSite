@@ -5,14 +5,13 @@ import { MathUtils } from 'three';
 
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 document.addEventListener("DOMContentLoaded", function () {
   // Set up for the basic scene, camera and renderer
   const scene = new THREE.Scene();
   const backdrop = document.querySelector('#three-js-background');
 
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 4000);
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 2000);
   const renderer = new THREE.WebGLRenderer({
     canvas: backdrop,
     antialias: true
@@ -21,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
   renderer.setPixelRatio( window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputEncoding = THREE.sRGBEncoding;
-  camera.position.setZ(1750);
+  camera.position.setZ(800);
   
   //Set up for the electric lights
 
@@ -38,9 +37,9 @@ document.addEventListener("DOMContentLoaded", function () {
     showDots: true,
     showLines: true,
     minDistance: 150,
-    limitConnections: false,
-    maxConnections: 20,
-    particleCount: 500
+    limitConnections: true,
+    maxConnections: 5,
+    particleCount: 50
   }
 
   function initGUI(){
@@ -69,15 +68,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     container = backdrop
 
-    const controls = new OrbitControls( camera, container);
-    controls.minDistance = 1000;
-    controls.maxDistance = 3000;
 
     group = new THREE.Group();
     scene.add(group);
 
     const helper = new THREE.BoxHelper(new THREE.Mesh(new THREE.BoxGeometry(r,r,r)));
-    helper.material.color.setHex(0x101010);
+    helper.material.color.setHex(0xE8505B);
     helper.material.blending = THREE.AdditiveBlending;
     helper.material.transparent = true;
     group.add(helper);
@@ -126,6 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
     geometry.setDrawRange(0,0);
 
     const material = new THREE.LineBasicMaterial({
+      color: 0xF9D56E,
       vertexColors:true,
       blending: THREE.AdditiveBlending,
       transparent: true
@@ -234,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const dz = particlePositions[i*3 + 2] - particlePositions[j*3 + 2];
         const distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
         
-        if(dist < effectController.minDistance) {
+        if(distance < effectController.minDistance) {
 
           particleData.numConnections++;
           particleDataBase.numConnections++;
