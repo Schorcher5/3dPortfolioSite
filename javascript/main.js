@@ -11,16 +11,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const scene = new THREE.Scene();
   const backdrop = document.querySelector('#three-js-background');
 
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 2000);
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1,2000);
   const renderer = new THREE.WebGLRenderer({
     canvas: backdrop,
-    antialias: false
+    antialias: true
   });
   
   renderer.setPixelRatio( window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.outputEncoding = THREE.sRGBEncoding;
-  camera.position.setZ(400);
+  camera.position.setZ(800);
   
   //Set up for the electric lights
 
@@ -28,9 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
   particles, pointCloud, particlePositions, linesMesh;
   const particlesData = [];
   
-  const maxParticleCount = 400;
+  const maxParticleCount = 500;
   let particleCount = 200;
-  const r =  400;
+  const r =  800;
   const rHalf = r/2;
 
   const effectController = {
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     scene.add(group);
 
     const helper = new THREE.BoxHelper(new THREE.Mesh(new THREE.BoxGeometry(r,r,r)));
-    helper.material.color.setHex(0xE8505B);
+    helper.material.color.setHex(0xEED180);
     helper.material.blending = THREE.AdditiveBlending;
     helper.material.transparent = true;
     group.add(helper);
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
     geometry.setDrawRange(0,0);
 
     const material = new THREE.LineBasicMaterial({
-      color: 0xF9D56E,
+      color: 0xD75281,
       vertexColors:true,
       blending: THREE.AdditiveBlending,
       transparent: true
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
   //Dummy torus for testing
   const torus = new THREE.Mesh( 
     new THREE.TorusGeometry(10, 3, 16, 100), 
-    new THREE.MeshStandardMaterial({color:0xFF6347}));
+    new THREE.MeshStandardMaterial({color:0xB93160}));
   
   scene.add(torus);
   
@@ -171,17 +171,17 @@ document.addEventListener("DOMContentLoaded", function () {
   //Adding Stars to the scene in random places
   function addStars() {
     const star = new THREE.Mesh(
-      new THREE.SphereGeometry(0.25,1,1),
-      new THREE.MeshStandardMaterial({color:0x14B1AB})
+      new THREE.SphereGeometry(0.4),
+      new THREE.MeshStandardMaterial({color:0xFFF89C})
     );
   
-    const [x,y,z] = Array(3).fill().map(() => MathUtils.randFloatSpread(1000));
+    const [x,y,z] = Array(3).fill().map(() => MathUtils.randFloatSpread(1200));
   
     star.position.set(x,y,z);
     scene.add(star);
   }
   
-  Array(5000).fill().forEach(addStars);
+  Array(400).fill().forEach(addStars);
   
 
   //Animation loop where the rendering take place
