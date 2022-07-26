@@ -14,13 +14,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 2000);
   const renderer = new THREE.WebGLRenderer({
     canvas: backdrop,
-    antialias: true
+    antialias: false
   });
   
   renderer.setPixelRatio( window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  camera.position.setZ(800);
+	renderer.outputEncoding = THREE.sRGBEncoding;
+  camera.position.setZ(400);
   
   //Set up for the electric lights
 
@@ -28,9 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
   particles, pointCloud, particlePositions, linesMesh;
   const particlesData = [];
   
-  const maxParticleCount = 1000;
-  let particleCount = 500;
-  const r =  800;
+  const maxParticleCount = 400;
+  let particleCount = 200;
+  const r =  400;
   const rHalf = r/2;
 
   const effectController = {
@@ -134,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
 
     stats = new Stats();
+    stats.showPanel(0);
     container.appendChild(stats.dom);
 
     //Re-adjusts the canvas size according to changes in the viewport
@@ -280,7 +281,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Rotate group list
 
     group.rotation.y = Date.now() * 0.0001;
-
+    stats.update();
     renderer.render(scene ,camera);
   }
   
@@ -289,7 +290,6 @@ document.addEventListener("DOMContentLoaded", function () {
   
 
   animate();
-  
   
 });
 
