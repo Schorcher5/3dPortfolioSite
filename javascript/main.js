@@ -20,7 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
   renderer.setPixelRatio( window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.outputEncoding = THREE.sRGBEncoding;
-  camera.position.setZ(800);
+  camera.position.setZ(200);
+  camera.position.setX(0);
   
   //Set up for the electric lights
 
