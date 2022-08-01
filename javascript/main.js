@@ -73,11 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     group = new THREE.Group();
     scene.add(group);
 
-    const helper = new THREE.BoxHelper(new THREE.Mesh(new THREE.BoxGeometry(r,r,r)));
-    helper.material.color.setHex(0xEED180);
-    helper.material.blending = THREE.AdditiveBlending;
-    helper.material.transparent = true;
-    group.add(helper);
+  
 
     const segments = maxParticleCount * maxParticleCount;
 
@@ -279,16 +275,37 @@ document.addEventListener("DOMContentLoaded", function () {
     torus.rotation.z += 0.01;
   
 
-    // Rotate group list
 
-    group.rotation.y = Date.now() * 0.0001;
     stats.update();
     renderer.render(scene ,camera);
   }
   
   initLines();
-
   
+  //Scrolling animation for lines
+
+  let lastTop = 0;
+
+  document.body.onscroll = ()=>{
+      const top = document.body.getBoundingClientRect().top;
+      let difference = 0;
+      let x = 0;
+      let y = 0;
+      let z = 0;
+
+      if(top < lastTop){
+        difference = (top-lastTop);
+        x = -0.001 * difference;
+
+      }else if( top > lastTop){
+        difference = (lastTop-top);
+        x = 0.001 * difference;
+      }
+
+      group.rotation.x += x;
+      console.log(x);
+      lastTop = top;
+  };
 
   animate();
   
