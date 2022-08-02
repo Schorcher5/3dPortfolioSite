@@ -5,14 +5,13 @@ import { MathUtils } from 'three';
 
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 document.addEventListener("DOMContentLoaded", function () {
   // Set up for the basic scene, camera and renderer
   const scene = new THREE.Scene();
   const backdrop = document.querySelector('#three-js-background');
 
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 4000);
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1,2000);
   const renderer = new THREE.WebGLRenderer({
     canvas: backdrop,
     antialias: true
@@ -20,8 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
   
   renderer.setPixelRatio( window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  camera.position.setZ(1750);
+	renderer.outputEncoding = THREE.sRGBEncoding;
+  camera.position.setZ(200);
+  camera.position.setY(-80);
+  camera.position.setX(-50);
   
   //Set up for the electric lights
 
@@ -29,8 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
   particles, pointCloud, particlePositions, linesMesh;
   const particlesData = [];
   
-  const maxParticleCount = 1000;
-  let particleCount = 500;
+  const maxParticleCount = 500;
+  let particleCount = 200;
   const r =  800;
   const rHalf = r/2;
 
@@ -38,9 +39,9 @@ document.addEventListener("DOMContentLoaded", function () {
     showDots: true,
     showLines: true,
     minDistance: 150,
-    limitConnections: false,
-    maxConnection: 20,
-    particleCount: 500
+    limitConnections: true,
+    maxConnections: 5,
+    particleCount: 50
   }
 
   function initGUI(){
@@ -56,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     gui.add(effectController, 'minDistance', 10, 300);
     gui.add(effectController, 'limitConnections');
-    gui.add(effectController, 'maxConnections', 0, 30, 1);
+    gui.add( effectController, 'maxConnections', 0, 30, 1 );
     gui.add(effectController, 'particleCount', 0, maxParticleCount, 1).onChange((value) => {
       particleCount = parseInt(value);
       particles.setDrawRange(0, particleCount);
@@ -69,18 +70,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     container = backdrop
 
-    const controls = new OrbitControls( camera, container);
-    controls.minDistance = 1000;
-    controls.maxDistance = 3000;
 
     group = new THREE.Group();
     scene.add(group);
 
-    const helper = new THREE.BoxHelper(new THREE.Mesh(new THREE.BoxGeometry(r,r,r)));
-    helper.material.color.setHex(0x101010);
-    helper.material.blending = THREE.AdditiveBlending;
-    helper.material.transparent = true;
-    group.add(helper);
+  
 
     const segments = maxParticleCount * maxParticleCount;
 
@@ -126,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
     geometry.setDrawRange(0,0);
 
     const material = new THREE.LineBasicMaterial({
+      color: 0xD75281,
       vertexColors:true,
       blending: THREE.AdditiveBlending,
       transparent: true
@@ -137,7 +132,17 @@ document.addEventListener("DOMContentLoaded", function () {
     
 
     stats = new Stats();
+    stats.showPanel(0);
     container.appendChild(stats.dom);
+
+    //Re-adjusts the canvas size according to changes in the viewport
+
+    window.addEventListener('resize', () =>{
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+  
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
     
 
 
@@ -146,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
   //Dummy torus for testing
   const torus = new THREE.Mesh( 
     new THREE.TorusGeometry(10, 3, 16, 100), 
-    new THREE.MeshStandardMaterial({color:0xFF6347}));
+    new THREE.MeshStandardMaterial({color:0xB93160}));
   
   scene.add(torus);
   
@@ -159,37 +164,161 @@ document.addEventListener("DOMContentLoaded", function () {
   
   scene.add(pointLight, ambientLight);
   
+  
 
   //Adding Stars to the scene in random places
   function addStars() {
     const star = new THREE.Mesh(
-      new THREE.SphereGeometry(0.25,24,24),
-      new THREE.MeshStandardMaterial({color:0xffffff})
+      new THREE.SphereGeometry(0.4),
+      new THREE.MeshStandardMaterial({color:0xFFF89C})
     );
   
-    const [x,y,z] = Array(3).fill().map(() => MathUtils.randFloatSpread(100));
+    const [x,y,z] = Array(3).fill().map(() => MathUtils.randFloatSpread(1200));
   
     star.position.set(x,y,z);
     scene.add(star);
   }
   
-  Array(200).fill().forEach(addStars);
+  Array(400).fill().forEach(addStars);
   
 
   //Animation loop where the rendering take place
   function animate(){
+
+    // line animation
+
+    let vertexPosition = 0;
+    let colorPosition = 0;
+    let numberOfConnected = 0;
+    
+    // Reset number of connections back to 0;
+
+    for( let i =0; i<particleCount; i++){
+      particlesData[i].numConnections = 0;
+    }
+
+
+    //Set up new positions of lines through steps that are based on their particle data and where they sit in relation to the radius (+-400, half of radius)
+    for( let i = 0; i< particleCount; i++){
+      const particleData = particlesData[i];
+
+      particlePositions[i*3] += particleData.velocity.x;
+      particlePositions[i*3 + 1] += particleData.velocity.y;
+      particlePositions[i*3 + 2] += particleData.velocity.z;
+
+      // Switching step magnitude if they cross the min/max range (+- 400) set by half the radius
+      if (particlePositions[i*3 + 1] < -rHalf  || particlePositions[i*3 + 1] > rHalf)
+        particleData.velocity.y *= -1;
+
+      if (particlePositions[i*3] < -rHalf  || particlePositions[i*3] > rHalf)
+        particleData.velocity.x *= -1;
+
+      if (particlePositions[i*3 + 2] < -rHalf  || particlePositions[i*3 + 2] > rHalf)
+        particleData.velocity.z *= -1;
+
+      if (effectController.limitConnections && particleData.numConnections >= effectController.maxConnections) continue;
+
+
+      for( let j = i+ 1; j<particleCount; j++){
+
+        const particleDataBase = particlesData[j];
+
+        if (effectController.limitConnections && particleDataBase.numConnections >= effectController.maxConnections) continue;
+
+        const dx = particlePositions[i*3] - particlePositions[j*3];
+        const dy = particlePositions[i*3 + 1] - particlePositions[j*3 + 1];
+        const dz = particlePositions[i*3 + 2] - particlePositions[j*3 + 2];
+        const distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+        
+        if(distance < effectController.minDistance) {
+
+          particleData.numConnections++;
+          particleDataBase.numConnections++;
+
+          const alpha = 1.0 - distance/effectController.minDistance;
+
+          positions[ vertexPosition++ ] = particlePositions[ i * 3 ];
+          positions[ vertexPosition++ ] = particlePositions[ i * 3 + 1 ];
+          positions[ vertexPosition++ ] = particlePositions[ i * 3 + 2 ];
+
+          positions[ vertexPosition++ ] = particlePositions[ j * 3 ];
+          positions[ vertexPosition++ ] = particlePositions[ j * 3 + 1 ];
+          positions[ vertexPosition++ ] = particlePositions[ j * 3 + 2 ];
+
+          colors[ colorPosition++ ] = alpha;
+          colors[ colorPosition++ ] = alpha;
+          colors[ colorPosition++ ] = alpha;
+
+          colors[ colorPosition++ ] = alpha;
+          colors[ colorPosition++ ] = alpha;
+          colors[ colorPosition++ ] = alpha;
+
+          numberOfConnected++;
+
+
+          
+        }
+      }
+
+    }
+
+    linesMesh.geometry.setDrawRange(0, numberOfConnected*2);
+    linesMesh.geometry.attributes.position.needsUpdate = true;
+    linesMesh.geometry.attributes.color.needsUpdate = true;
+
+    pointCloud.geometry.attributes.position.needsUpdate = true;
+
+    // Torus animation
     requestAnimationFrame(animate);
   
     torus.rotation.x += 0.01;
     torus.rotation.y += 0.005;
     torus.rotation.z += 0.01;
   
+
+
+    stats.update();
     renderer.render(scene ,camera);
   }
   
   initLines();
-  animate();
   
+  //Scrolling animation for lines
+
+  let lastTop = 0;
+
+  document.body.onscroll = ()=>{
+      const top = document.body.getBoundingClientRect().top;
+      let difference = 0;
+      let x = 0;
+      let y = 0;
+      let z = 0;
+
+      if(top < lastTop){
+        difference = (top-lastTop);
+        x = -0.001 * difference;
+        z = -0.08 * difference * Math.sin(top/950)
+        y = 0.05 * difference * Math.sin(top/1000);
+
+      }else if( top > lastTop){
+        difference = (lastTop-top);
+        x = 0.001 * difference;
+        z = 0.08 * difference * Math.sin(top/950);
+        y = -0.05 * difference * Math.sin(top/1000);
+
+      }
+
+      group.rotation.x += x;
+      camera.position.x += 22*x;
+      camera.position.z += z;
+      camera.position.y += y;
+
+
+      console.log(Math.sin(top/2000));
+      lastTop = top;
+  };
+
+  animate();
   
 });
 
