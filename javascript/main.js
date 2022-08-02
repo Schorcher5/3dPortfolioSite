@@ -21,7 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
   renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.outputEncoding = THREE.sRGBEncoding;
   camera.position.setZ(200);
-  camera.position.setX(0);
+  camera.position.setY(-80);
+  camera.position.setX(-50);
   
   //Set up for the electric lights
 
@@ -296,17 +297,23 @@ document.addEventListener("DOMContentLoaded", function () {
       if(top < lastTop){
         difference = (top-lastTop);
         x = -0.001 * difference;
-        z = -0.08 * difference * Math.sin(top/1000)
+        z = -0.08 * difference * Math.sin(top/950)
+        y = 0.05 * difference * Math.sin(top/1000);
 
       }else if( top > lastTop){
         difference = (lastTop-top);
         x = 0.001 * difference;
-        z = 0.08 * difference * Math.sin(top/1000);
+        z = 0.08 * difference * Math.sin(top/950);
+        y = -0.05 * difference * Math.sin(top/1000);
+
       }
 
       group.rotation.x += x;
-      camera.position.x += 3*x;
+      camera.position.x += 22*x;
       camera.position.z += z;
+      camera.position.y += y;
+
+
       console.log(Math.sin(top/2000));
       lastTop = top;
   };
