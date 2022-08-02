@@ -296,14 +296,18 @@ document.addEventListener("DOMContentLoaded", function () {
       if(top < lastTop){
         difference = (top-lastTop);
         x = -0.001 * difference;
+        z = -0.08 * difference * Math.sin(top/1000)
 
       }else if( top > lastTop){
         difference = (lastTop-top);
         x = 0.001 * difference;
+        z = 0.08 * difference * Math.sin(top/1000);
       }
 
       group.rotation.x += x;
-      console.log(x);
+      camera.position.x += 3*x;
+      camera.position.z += z;
+      console.log(Math.sin(top/2000));
       lastTop = top;
   };
 
