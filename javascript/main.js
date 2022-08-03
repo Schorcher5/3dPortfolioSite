@@ -59,23 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function initGUI(){
-    const gui = new GUI();
-    
-    gui.add(effectController, 'showDots').onChange((value) =>{
-      pointCloud.visible = value;
-    });
-
-    gui.add(effectController, 'showLines').onChange((value) => {
-      linesMesh.visible = value;
-    });
-
-    gui.add(effectController, 'minDistance', 10, 300);
-    gui.add(effectController, 'limitConnections');
-    gui.add( effectController, 'maxConnections', 0, 30, 1 );
-    gui.add(effectController, 'particleCount', 0, maxParticleCount, 1).onChange((value) => {
-      particleCount = parseInt(value);
-      particles.setDrawRange(0, particleCount);
-    });
+  
   }
 
   function initLines() {
@@ -164,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //Dummy torus for testing
   const torus = new THREE.Mesh( 
-    new THREE.TorusGeometry(10, 0.1, 16, 100), 
+    new THREE.TorusKnotGeometry(20, 0.1, 100, 20, 13, 20), 
     new THREE.MeshStandardMaterial({color:0x0078AA}));
   
   scene.add(torus);
@@ -261,12 +245,12 @@ document.addEventListener("DOMContentLoaded", function () {
           positions[ vertexPosition++ ] = particlePositions[ j * 3 + 2 ];
 
           colors[ colorPosition++ ] = alpha + -lastTop/1500;
-          colors[ colorPosition++ ] = alpha + -lastTop/2000*2;
-          colors[ colorPosition++ ] = alpha + -lastTop/3000*2;
+          colors[ colorPosition++ ] = alpha + -lastTop/2000;
+          colors[ colorPosition++ ] = alpha + -lastTop/3000;
 
-          colors[ colorPosition++ ] = alpha + -lastTop/3000;
-          colors[ colorPosition++ ] = alpha + -lastTop/3000;
-          colors[ colorPosition++ ] = alpha + -lastTop/3000*2;
+          colors[ colorPosition++ ] = alpha + -lastTop/7000;
+          colors[ colorPosition++ ] = alpha + -lastTop/7000;
+          colors[ colorPosition++ ] = alpha + -lastTop/7000;
 
           numberOfConnected++;
 
@@ -329,7 +313,14 @@ document.addEventListener("DOMContentLoaded", function () {
       camera.position.z += z;
       camera.position.y += y;
 
+      if(Math.floor(-top/1000) > Math.floor(-lastTop/1000)){
+        effectController.minDistance -= 10;
+      } 
+      else if(Math.floor(-top/1000) < Math.floor(-lastTop/1000)) {
+        effectController.minDistance += 10;
+      }
 
+      
       lastTop = top;
   };
 
