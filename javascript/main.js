@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
     geometry.setDrawRange(0,0);
 
     const material = new THREE.LineBasicMaterial({
-      color: 0xD75281,
+      color: 0xF4E06D,
       vertexColors:true,
       blending: THREE.AdditiveBlending,
       transparent: true
@@ -164,8 +164,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //Dummy torus for testing
   const torus = new THREE.Mesh( 
-    new THREE.TorusGeometry(10, 3, 16, 100), 
-    new THREE.MeshStandardMaterial({color:0xB93160}));
+    new THREE.TorusGeometry(10, 0.1, 16, 100), 
+    new THREE.MeshStandardMaterial({color:0x0078AA}));
   
   scene.add(torus);
   torus.position.z = 300;
@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
           particleData.numConnections++;
           particleDataBase.numConnections++;
 
-          const alpha = 1.0 - distance/effectController.minDistance;
+          const alpha =   - distance/effectController.minDistance;
 
           positions[ vertexPosition++ ] = particlePositions[ i * 3 ];
           positions[ vertexPosition++ ] = particlePositions[ i * 3 + 1 ];
@@ -260,13 +260,13 @@ document.addEventListener("DOMContentLoaded", function () {
           positions[ vertexPosition++ ] = particlePositions[ j * 3 + 1 ];
           positions[ vertexPosition++ ] = particlePositions[ j * 3 + 2 ];
 
-          colors[ colorPosition++ ] = alpha;
-          colors[ colorPosition++ ] = alpha;
-          colors[ colorPosition++ ] = alpha;
+          colors[ colorPosition++ ] = alpha + -lastTop/1500;
+          colors[ colorPosition++ ] = alpha + -lastTop/2000*2;
+          colors[ colorPosition++ ] = alpha + -lastTop/3000*2;
 
-          colors[ colorPosition++ ] = alpha;
-          colors[ colorPosition++ ] = alpha;
-          colors[ colorPosition++ ] = alpha;
+          colors[ colorPosition++ ] = alpha + -lastTop/3000;
+          colors[ colorPosition++ ] = alpha + -lastTop/3000;
+          colors[ colorPosition++ ] = alpha + -lastTop/3000*2;
 
           numberOfConnected++;
 
@@ -324,10 +324,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       group.rotation.x += x;
+      
       camera.position.x += 20*x;
       camera.position.z += z;
       camera.position.y += y;
-      console.log(top);
 
 
       lastTop = top;
