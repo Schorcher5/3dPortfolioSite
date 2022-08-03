@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showDots: true,
     showLines: true,
     minDistance: 150,
-    limitConnections: true,
+    limitConnections: false,
     maxConnections: 5,
     particleCount: 50
   }
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //Dummy torus for testing
   const torus = new THREE.Mesh( 
-    new THREE.TorusKnotGeometry(20, 0.1, 100, 20, 13, 20), 
+    new THREE.TorusKnotGeometry(20, 0.1, 100, 20, 13, 13), 
     new THREE.MeshStandardMaterial({color:0x0078AA}));
   
   scene.add(torus);
@@ -246,11 +246,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
           colors[ colorPosition++ ] = alpha + -lastTop/1500;
           colors[ colorPosition++ ] = alpha + -lastTop/2000;
-          colors[ colorPosition++ ] = alpha + -lastTop/3000;
+          colors[ colorPosition++ ] = alpha + -lastTop/4000;
 
-          colors[ colorPosition++ ] = alpha + -lastTop/7000;
-          colors[ colorPosition++ ] = alpha + -lastTop/7000;
-          colors[ colorPosition++ ] = alpha + -lastTop/7000;
+          colors[ colorPosition++ ] = alpha;
+          colors[ colorPosition++ ] = alpha;
+          colors[ colorPosition++ ] = alpha;
 
           numberOfConnected++;
 
@@ -273,7 +273,6 @@ document.addEventListener("DOMContentLoaded", function () {
     torus.rotation.x += 0.01;
     torus.rotation.y += 0.005;
     torus.rotation.z += 0.01;
-  
 
 
     stats.update();
@@ -313,12 +312,8 @@ document.addEventListener("DOMContentLoaded", function () {
       camera.position.z += z;
       camera.position.y += y;
 
-      if(Math.floor(-top/1000) > Math.floor(-lastTop/1000)){
-        effectController.minDistance -= 10;
-      } 
-      else if(Math.floor(-top/1000) < Math.floor(-lastTop/1000)) {
-        effectController.minDistance += 10;
-      }
+      
+
 
       
       lastTop = top;
