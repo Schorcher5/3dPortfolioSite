@@ -3,6 +3,14 @@ import '../css/style.css'
 import * as THREE from 'three';
 import { MathUtils } from 'three';
 
+import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass';
+import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
+
+
+
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 
@@ -10,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Set up for the basic scene, camera and renderer
   const scene = new THREE.Scene();
   const backdrop = document.querySelector('#three-js-background');
+
 
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1,2000);
   const renderer = new THREE.WebGLRenderer({
@@ -23,8 +32,15 @@ document.addEventListener("DOMContentLoaded", function () {
   camera.position.setZ(200);
   camera.position.setY(-80);
   camera.position.setX(-50);
-  
-  //Set up for the electric lights
+
+  // Set up for postprocessing
+
+  const composer = new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene, camera));
+  composer.addPass(new UnrealBloomPass());
+  composer.addPass(new AfterimagePass(0.65));
+
+  //Set up for the line animation variable
 
   let group, container, stats , positions, colors, 
   particles, pointCloud, particlePositions, linesMesh;
@@ -278,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     stats.update();
-    renderer.render(scene ,camera);
+    composer.render();
   }
   
   initLines();
