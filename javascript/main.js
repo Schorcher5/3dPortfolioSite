@@ -3,6 +3,13 @@ import '../css/style.css'
 import * as THREE from 'three';
 import { MathUtils } from 'three';
 
+import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass';
+
+
+
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 
@@ -10,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Set up for the basic scene, camera and renderer
   const scene = new THREE.Scene();
   const backdrop = document.querySelector('#three-js-background');
+
 
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1,2000);
   const renderer = new THREE.WebGLRenderer({
@@ -20,11 +28,17 @@ document.addEventListener("DOMContentLoaded", function () {
   renderer.setPixelRatio( window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.outputEncoding = THREE.sRGBEncoding;
-  camera.position.setZ(200);
-  camera.position.setY(-80);
-  camera.position.setX(-50);
-  
-  //Set up for the electric lights
+  camera.position.setZ(300);
+ 
+
+  // Set up for postprocessing
+
+  const composer = new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene, camera));
+  composer.addPass(new UnrealBloomPass());
+  composer.addPass(new AfterimagePass(0.65));
+
+  //Set up for the line animation variable
 
   let group, container, stats , positions, colors, 
   particles, pointCloud, particlePositions, linesMesh;
@@ -39,29 +53,13 @@ document.addEventListener("DOMContentLoaded", function () {
     showDots: true,
     showLines: true,
     minDistance: 150,
-    limitConnections: true,
+    limitConnections: false,
     maxConnections: 5,
     particleCount: 50
   }
 
   function initGUI(){
-    const gui = new GUI();
-    
-    gui.add(effectController, 'showDots').onChange((value) =>{
-      pointCloud.visible = value;
-    });
-
-    gui.add(effectController, 'showLines').onChange((value) => {
-      linesMesh.visible = value;
-    });
-
-    gui.add(effectController, 'minDistance', 10, 300);
-    gui.add(effectController, 'limitConnections');
-    gui.add( effectController, 'maxConnections', 0, 30, 1 );
-    gui.add(effectController, 'particleCount', 0, maxParticleCount, 1).onChange((value) => {
-      particleCount = parseInt(value);
-      particles.setDrawRange(0, particleCount);
-    });
+  
   }
 
   function initLines() {
@@ -120,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
     geometry.setDrawRange(0,0);
 
     const material = new THREE.LineBasicMaterial({
-      color: 0xD75281,
+      color: 0xF4E06D,
       vertexColors:true,
       blending: THREE.AdditiveBlending,
       transparent: true
@@ -150,10 +148,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //Dummy torus for testing
   const torus = new THREE.Mesh( 
-    new THREE.TorusGeometry(10, 3, 16, 100), 
-    new THREE.MeshStandardMaterial({color:0xB93160}));
+    new THREE.TorusKnotGeometry(20, 0.1, 100, 20, 13, 13), 
+    new THREE.MeshStandardMaterial({color:0x0078AA}));
   
   scene.add(torus);
+  torus.position.z = 300;
   
 
   //Basic lighting
@@ -235,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
           particleData.numConnections++;
           particleDataBase.numConnections++;
 
-          const alpha = 1.0 - distance/effectController.minDistance;
+          const alpha =   - distance/effectController.minDistance;
 
           positions[ vertexPosition++ ] = particlePositions[ i * 3 ];
           positions[ vertexPosition++ ] = particlePositions[ i * 3 + 1 ];
@@ -245,9 +244,9 @@ document.addEventListener("DOMContentLoaded", function () {
           positions[ vertexPosition++ ] = particlePositions[ j * 3 + 1 ];
           positions[ vertexPosition++ ] = particlePositions[ j * 3 + 2 ];
 
-          colors[ colorPosition++ ] = alpha;
-          colors[ colorPosition++ ] = alpha;
-          colors[ colorPosition++ ] = alpha;
+          colors[ colorPosition++ ] = alpha + -lastTop/1500;
+          colors[ colorPosition++ ] = alpha + -lastTop/2000;
+          colors[ colorPosition++ ] = alpha + -lastTop/4000;
 
           colors[ colorPosition++ ] = alpha;
           colors[ colorPosition++ ] = alpha;
@@ -274,11 +273,10 @@ document.addEventListener("DOMContentLoaded", function () {
     torus.rotation.x += 0.01;
     torus.rotation.y += 0.005;
     torus.rotation.z += 0.01;
-  
 
 
     stats.update();
-    renderer.render(scene ,camera);
+    composer.render();
   }
   
   initLines();
@@ -296,25 +294,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if(top < lastTop){
         difference = (top-lastTop);
-        x = -0.001 * difference;
-        z = -0.08 * difference * Math.sin(top/950)
-        y = 0.05 * difference * Math.sin(top/1000);
+        x = -0.001 * difference * Math.cos(top/950);
+        z = -0.03 * difference * Math.sin(top/950) * -(top/2000);
+        y = 0.03 * difference * Math.sin(top/1000);
 
       }else if( top > lastTop){
         difference = (lastTop-top);
-        x = 0.001 * difference;
-        z = 0.08 * difference * Math.sin(top/950);
-        y = -0.05 * difference * Math.sin(top/1000);
+        x = 0.001 * difference * Math.cos(top/950);
+        z = 0.03 * difference * Math.sin(top/950) * -(top/2000);
+        y = -0.03 * difference * Math.sin(top/1000);
 
       }
 
       group.rotation.x += x;
-      camera.position.x += 22*x;
+      
+      camera.position.x += 20*x;
       camera.position.z += z;
       camera.position.y += y;
 
+      
 
-      console.log(Math.sin(top/2000));
+
+      
       lastTop = top;
   };
 
