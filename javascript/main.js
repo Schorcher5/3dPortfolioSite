@@ -7,7 +7,6 @@ import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.j
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass';
-import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
 
 
 
@@ -29,9 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
   renderer.setPixelRatio( window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.outputEncoding = THREE.sRGBEncoding;
-  camera.position.setZ(200);
-  camera.position.setY(-80);
-  camera.position.setX(-50);
+  camera.position.setZ(300);
+ 
 
   // Set up for postprocessing
 
@@ -170,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
     new THREE.MeshStandardMaterial({color:0xB93160}));
   
   scene.add(torus);
+  torus.position.z = 300;
   
 
   //Basic lighting
@@ -312,25 +311,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if(top < lastTop){
         difference = (top-lastTop);
-        x = -0.001 * difference;
-        z = -0.08 * difference * Math.sin(top/950)
-        y = 0.05 * difference * Math.sin(top/1000);
+        x = -0.001 * difference * Math.cos(top/950);
+        z = -0.03 * difference * Math.sin(top/950) * -(top/2000);
+        y = 0.03 * difference * Math.sin(top/1000);
 
       }else if( top > lastTop){
         difference = (lastTop-top);
-        x = 0.001 * difference;
-        z = 0.08 * difference * Math.sin(top/950);
-        y = -0.05 * difference * Math.sin(top/1000);
+        x = 0.001 * difference * Math.cos(top/950);
+        z = 0.03 * difference * Math.sin(top/950) * -(top/2000);
+        y = -0.03 * difference * Math.sin(top/1000);
 
       }
 
       group.rotation.x += x;
-      camera.position.x += 22*x;
+      camera.position.x += 20*x;
       camera.position.z += z;
       camera.position.y += y;
+      console.log(top);
 
 
-      console.log(Math.sin(top/2000));
       lastTop = top;
   };
 
