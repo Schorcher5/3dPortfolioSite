@@ -8,16 +8,10 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass';
 
-
-
-import Stats from 'three/examples/jsm/libs/stats.module.js';
-import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
-
 document.addEventListener("DOMContentLoaded", function () {
   // Set up for the basic scene, camera and renderer
   const scene = new THREE.Scene();
   const backdrop = document.querySelector('#three-js-background');
-
 
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1,2000);
   const renderer = new THREE.WebGLRenderer({
@@ -29,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
   renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.outputEncoding = THREE.sRGBEncoding;
   camera.position.setZ(300);
- 
 
   // Set up for postprocessing
 
@@ -46,8 +39,8 @@ document.addEventListener("DOMContentLoaded", function () {
   
   const maxParticleCount = 500;
   let particleCount = 200;
-  const r =  800;
-  const rHalf = r/2;
+  const radius =  800;
+  const radiusHalf = radius/2;
 
   const effectController = {
     showDots: true,
@@ -58,13 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
     particleCount: 50
   }
 
-  function initGUI(){
-  
-  }
-
   function initLines() {
-
-    initGUI();
 
     container = backdrop
 
@@ -79,21 +66,13 @@ document.addEventListener("DOMContentLoaded", function () {
     positions = new Float32Array(segments*3);
     colors = new Float32Array(segments * 3);
 
-    const particleMaterial = new THREE.PointsMaterial({
-      color: 0xFFFFFF,
-      size: 3,
-      blending: THREE.AdditiveBlending,
-      transparent: true,
-      sizeAttenuation: false
-    });
-
     particles = new THREE.BufferGeometry();
     particlePositions = new Float32Array(maxParticleCount * 3);
 
     for( let i = 0; i< maxParticleCount; i++){
-      const x = Math.random() * r-r/2;
-      const y = Math.random() * r-r/2;
-      const z = Math.random() * r-r/2;
+      const x = Math.random() * radius-radius/2;
+      const y = Math.random() * radius-radius/2;
+      const z = Math.random() * radius-radius/2;
 
       particlePositions[i*3] = x;
       particlePositions[i*3+1] = y;
@@ -127,18 +106,11 @@ document.addEventListener("DOMContentLoaded", function () {
     linesMesh = new THREE.LineSegments(geometry, material);
     group.add(linesMesh);
 
-    
-
-    stats = new Stats();
-    stats.showPanel(0);
-    container.appendChild(stats.dom);
-
     //Re-adjusts the canvas size according to changes in the viewport
 
     window.addEventListener('resize', () =>{
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-  
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
     
@@ -156,12 +128,10 @@ document.addEventListener("DOMContentLoaded", function () {
   
 
   //Basic lighting
-  const pointLight = new THREE.PointLight(0xffffff);
-  pointLight.position.set(20,20,20);
-  
+
   const ambientLight = new THREE.AmbientLight(0xffffff);
   
-  scene.add(pointLight, ambientLight);
+  scene.add(ambientLight);
   
   
 
@@ -206,13 +176,13 @@ document.addEventListener("DOMContentLoaded", function () {
       particlePositions[i*3 + 2] += particleData.velocity.z;
 
       // Switching step magnitude if they cross the min/max range (+- 400) set by half the radius
-      if (particlePositions[i*3 + 1] < -rHalf  || particlePositions[i*3 + 1] > rHalf)
+      if (particlePositions[i*3 + 1] < -radiusHalf  || particlePositions[i*3 + 1] > radiusHalf)
         particleData.velocity.y *= -1;
 
-      if (particlePositions[i*3] < -rHalf  || particlePositions[i*3] > rHalf)
+      if (particlePositions[i*3] < -radiusHalf  || particlePositions[i*3] > radiusHalf)
         particleData.velocity.x *= -1;
 
-      if (particlePositions[i*3 + 2] < -rHalf  || particlePositions[i*3 + 2] > rHalf)
+      if (particlePositions[i*3 + 2] < -radiusHalf  || particlePositions[i*3 + 2] > radiusHalf)
         particleData.velocity.z *= -1;
 
       if (effectController.limitConnections && particleData.numConnections >= effectController.maxConnections) continue;
@@ -253,9 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
           colors[ colorPosition++ ] = alpha;
 
           numberOfConnected++;
-
-
-          
+       
         }
       }
 
@@ -274,8 +242,6 @@ document.addEventListener("DOMContentLoaded", function () {
     torus.rotation.y += 0.005;
     torus.rotation.z += 0.01;
 
-
-    stats.update();
     composer.render();
   }
   
@@ -312,10 +278,6 @@ document.addEventListener("DOMContentLoaded", function () {
       camera.position.z += z;
       camera.position.y += y;
 
-      
-
-
-      
       lastTop = top;
   };
 
