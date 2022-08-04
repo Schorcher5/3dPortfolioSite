@@ -8,16 +8,10 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass';
 
-
-
-import Stats from 'three/examples/jsm/libs/stats.module.js';
-import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
-
 document.addEventListener("DOMContentLoaded", function () {
   // Set up for the basic scene, camera and renderer
   const scene = new THREE.Scene();
   const backdrop = document.querySelector('#three-js-background');
-
 
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1,2000);
   const renderer = new THREE.WebGLRenderer({
@@ -29,16 +23,15 @@ document.addEventListener("DOMContentLoaded", function () {
   renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.outputEncoding = THREE.sRGBEncoding;
   camera.position.setZ(300);
- 
 
-  // Set up for postprocessing
+  // Set up for postprocessing, including several built in threejs effects(passes)
 
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
   composer.addPass(new UnrealBloomPass());
   composer.addPass(new AfterimagePass(0.65));
 
-  //Set up for the line animation variable
+  //Set up vars for the line animation
 
   let group, container, stats , positions, colors, 
   particles, pointCloud, particlePositions, linesMesh;
@@ -46,9 +39,10 @@ document.addEventListener("DOMContentLoaded", function () {
   
   const maxParticleCount = 500;
   let particleCount = 200;
-  const r =  800;
-  const rHalf = r/2;
+  const radius =  800;
+  const radiusHalf = radius/2;
 
+  //Sets initial parameters for the lines
   const effectController = {
     showDots: true,
     showLines: true,
@@ -58,52 +52,42 @@ document.addEventListener("DOMContentLoaded", function () {
     particleCount: 50
   }
 
-  function initGUI(){
-  
-  }
-
-  function initLines() {
-
-    initGUI();
+  //Function the intializes line group
+  function initializeLines() {
 
     container = backdrop
 
-
+    //Group will contain all the lines while also allowing us to manipulate group wide properties
     group = new THREE.Group();
     scene.add(group);
 
-  
-
+    //Number of lines possible
     const segments = maxParticleCount * maxParticleCount;
 
+    //Arrays that manage the positions and colors for each segment (segment has three zones of colors)
     positions = new Float32Array(segments*3);
     colors = new Float32Array(segments * 3);
-
-    const particleMaterial = new THREE.PointsMaterial({
-      color: 0xFFFFFF,
-      size: 3,
-      blending: THREE.AdditiveBlending,
-      transparent: true,
-      sizeAttenuation: false
-    });
 
     particles = new THREE.BufferGeometry();
     particlePositions = new Float32Array(maxParticleCount * 3);
 
+    //Intializes the positions for each particles and there rates of change
     for( let i = 0; i< maxParticleCount; i++){
-      const x = Math.random() * r-r/2;
-      const y = Math.random() * r-r/2;
-      const z = Math.random() * r-r/2;
+      const x = Math.random() * radius-radius/2;
+      const y = Math.random() * radius-radius/2;
+      const z = Math.random() * radius-radius/2;
 
       particlePositions[i*3] = x;
       particlePositions[i*3+1] = y;
       particlePositions[i*3+2] = z;
-
+      
+      //Sets velocity for each triplet of values
       particlesData.push({
         velocity: new THREE.Vector3(-1 + Math.random()*2, -1 + Math.random()*2, -1 + Math.random()*2),
         numConnections:0
       });
     }
+
 
     particles.setDrawRange( 0, particleCount);
     particles.setAttribute( 'position', new THREE.BufferAttribute( particlePositions, 3).setUsage(THREE.DynamicDrawUsage));
@@ -127,18 +111,11 @@ document.addEventListener("DOMContentLoaded", function () {
     linesMesh = new THREE.LineSegments(geometry, material);
     group.add(linesMesh);
 
-    
-
-    stats = new Stats();
-    stats.showPanel(0);
-    container.appendChild(stats.dom);
-
     //Re-adjusts the canvas size according to changes in the viewport
 
     window.addEventListener('resize', () =>{
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-  
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
     
@@ -156,12 +133,10 @@ document.addEventListener("DOMContentLoaded", function () {
   
 
   //Basic lighting
-  const pointLight = new THREE.PointLight(0xffffff);
-  pointLight.position.set(20,20,20);
-  
+
   const ambientLight = new THREE.AmbientLight(0xffffff);
   
-  scene.add(pointLight, ambientLight);
+  scene.add(ambientLight);
   
   
 
@@ -206,18 +181,18 @@ document.addEventListener("DOMContentLoaded", function () {
       particlePositions[i*3 + 2] += particleData.velocity.z;
 
       // Switching step magnitude if they cross the min/max range (+- 400) set by half the radius
-      if (particlePositions[i*3 + 1] < -rHalf  || particlePositions[i*3 + 1] > rHalf)
+      if (particlePositions[i*3 + 1] < -radiusHalf  || particlePositions[i*3 + 1] > radiusHalf)
         particleData.velocity.y *= -1;
 
-      if (particlePositions[i*3] < -rHalf  || particlePositions[i*3] > rHalf)
+      if (particlePositions[i*3] < -radiusHalf  || particlePositions[i*3] > radiusHalf)
         particleData.velocity.x *= -1;
 
-      if (particlePositions[i*3 + 2] < -rHalf  || particlePositions[i*3 + 2] > rHalf)
+      if (particlePositions[i*3 + 2] < -radiusHalf  || particlePositions[i*3 + 2] > radiusHalf)
         particleData.velocity.z *= -1;
 
       if (effectController.limitConnections && particleData.numConnections >= effectController.maxConnections) continue;
 
-
+      
       for( let j = i+ 1; j<particleCount; j++){
 
         const particleDataBase = particlesData[j];
@@ -244,18 +219,16 @@ document.addEventListener("DOMContentLoaded", function () {
           positions[ vertexPosition++ ] = particlePositions[ j * 3 + 1 ];
           positions[ vertexPosition++ ] = particlePositions[ j * 3 + 2 ];
 
-          colors[ colorPosition++ ] = alpha + -lastTop/1500;
-          colors[ colorPosition++ ] = alpha + -lastTop/2000;
-          colors[ colorPosition++ ] = alpha + -lastTop/4000;
+          colors[ colorPosition++ ] = alpha + -lastTop/7500;
+          colors[ colorPosition++ ] = alpha + -lastTop/10000;
+          colors[ colorPosition++ ] = alpha + -lastTop/20000;
 
           colors[ colorPosition++ ] = alpha;
           colors[ colorPosition++ ] = alpha;
           colors[ colorPosition++ ] = alpha;
 
           numberOfConnected++;
-
-
-          
+       
         }
       }
 
@@ -267,37 +240,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
     pointCloud.geometry.attributes.position.needsUpdate = true;
 
-    // Torus animation
+    // Torus animation along with the rendering
     requestAnimationFrame(animate);
   
     torus.rotation.x += 0.01;
     torus.rotation.y += 0.005;
     torus.rotation.z += 0.01;
 
-
-    stats.update();
     composer.render();
   }
   
-  initLines();
+  initializeLines();
   
   //Scrolling animation for lines
 
   let lastTop = 0;
 
+
+  // Function to reorientate the camera and lines according to the mouse scroll(y position from the top)
   document.body.onscroll = ()=>{
+      // Top is a negative value that represents the distance from the top of the page
       const top = document.body.getBoundingClientRect().top;
+      //Difference is used to calculate how much camera and lines should move
       let difference = 0;
       let x = 0;
       let y = 0;
       let z = 0;
 
+      // When top is greater then the previous recorded top value(negate so comparison is in reverse), step values get set for x,y, and z coords
       if(top < lastTop){
         difference = (top-lastTop);
         x = -0.001 * difference * Math.cos(top/950);
         z = -0.03 * difference * Math.sin(top/950) * -(top/2000);
         y = 0.03 * difference * Math.sin(top/1000);
-
+      //Same as previous statement but in reverse
       }else if( top > lastTop){
         difference = (lastTop-top);
         x = 0.001 * difference * Math.cos(top/950);
@@ -306,16 +282,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       }
 
+
       group.rotation.x += x;
       
       camera.position.x += 20*x;
       camera.position.z += z;
       camera.position.y += y;
 
-      
-
-
-      
+      //Store top value as the previous one
       lastTop = top;
   };
 
