@@ -52,24 +52,26 @@ document.addEventListener("DOMContentLoaded", function () {
     particleCount: 50
   }
 
-  function initLines() {
+  //Function the intializes line group
+  function initializeLines() {
 
     container = backdrop
 
-
+    //Group will contain all the lines while also allowing us to manipulate group wide properties
     group = new THREE.Group();
     scene.add(group);
 
-  
-
+    //Number of lines possible
     const segments = maxParticleCount * maxParticleCount;
 
+    //Arrays that manage the positions and colors for each segment (segment has three zones of colors)
     positions = new Float32Array(segments*3);
     colors = new Float32Array(segments * 3);
 
     particles = new THREE.BufferGeometry();
     particlePositions = new Float32Array(maxParticleCount * 3);
 
+    //Intializes the positions for each particles and there rates of change
     for( let i = 0; i< maxParticleCount; i++){
       const x = Math.random() * radius-radius/2;
       const y = Math.random() * radius-radius/2;
@@ -78,12 +80,14 @@ document.addEventListener("DOMContentLoaded", function () {
       particlePositions[i*3] = x;
       particlePositions[i*3+1] = y;
       particlePositions[i*3+2] = z;
-
+      
+      //Sets velocity for each triplet of values
       particlesData.push({
         velocity: new THREE.Vector3(-1 + Math.random()*2, -1 + Math.random()*2, -1 + Math.random()*2),
         numConnections:0
       });
     }
+
 
     particles.setDrawRange( 0, particleCount);
     particles.setAttribute( 'position', new THREE.BufferAttribute( particlePositions, 3).setUsage(THREE.DynamicDrawUsage));
@@ -188,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (effectController.limitConnections && particleData.numConnections >= effectController.maxConnections) continue;
 
-
+      
       for( let j = i+ 1; j<particleCount; j++){
 
         const particleDataBase = particlesData[j];
@@ -215,9 +219,9 @@ document.addEventListener("DOMContentLoaded", function () {
           positions[ vertexPosition++ ] = particlePositions[ j * 3 + 1 ];
           positions[ vertexPosition++ ] = particlePositions[ j * 3 + 2 ];
 
-          colors[ colorPosition++ ] = alpha + -lastTop/1500;
-          colors[ colorPosition++ ] = alpha + -lastTop/2000;
-          colors[ colorPosition++ ] = alpha + -lastTop/4000;
+          colors[ colorPosition++ ] = alpha + -lastTop/7500;
+          colors[ colorPosition++ ] = alpha + -lastTop/10000;
+          colors[ colorPosition++ ] = alpha + -lastTop/20000;
 
           colors[ colorPosition++ ] = alpha;
           colors[ colorPosition++ ] = alpha;
@@ -246,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
     composer.render();
   }
   
-  initLines();
+  initializeLines();
   
   //Scrolling animation for lines
 
