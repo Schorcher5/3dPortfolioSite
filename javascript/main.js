@@ -24,14 +24,14 @@ document.addEventListener("DOMContentLoaded", function () {
 	renderer.outputEncoding = THREE.sRGBEncoding;
   camera.position.setZ(300);
 
-  // Set up for postprocessing
+  // Set up for postprocessing, including several built in threejs effects(passes)
 
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
   composer.addPass(new UnrealBloomPass());
   composer.addPass(new AfterimagePass(0.65));
 
-  //Set up for the line animation variable
+  //Set up vars for the line animation
 
   let group, container, stats , positions, colors, 
   particles, pointCloud, particlePositions, linesMesh;
@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const radius =  800;
   const radiusHalf = radius/2;
 
+  //Sets initial parameters for the lines
   const effectController = {
     showDots: true,
     showLines: true,
@@ -235,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     pointCloud.geometry.attributes.position.needsUpdate = true;
 
-    // Torus animation
+    // Torus animation along with the rendering
     requestAnimationFrame(animate);
   
     torus.rotation.x += 0.01;
@@ -251,19 +252,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let lastTop = 0;
 
+
+  // Function to reorientate the camera and lines according to the mouse scroll(y position from the top)
   document.body.onscroll = ()=>{
+      // Top is a negative value that represents the distance from the top of the page
       const top = document.body.getBoundingClientRect().top;
+      //Difference is used to calculate how much camera and lines should move
       let difference = 0;
       let x = 0;
       let y = 0;
       let z = 0;
 
+      // When top is greater then the previous recorded top value(negate so comparison is in reverse), step values get set for x,y, and z coords
       if(top < lastTop){
         difference = (top-lastTop);
         x = -0.001 * difference * Math.cos(top/950);
         z = -0.03 * difference * Math.sin(top/950) * -(top/2000);
         y = 0.03 * difference * Math.sin(top/1000);
-
+      //Same as previous statement but in reverse
       }else if( top > lastTop){
         difference = (lastTop-top);
         x = 0.001 * difference * Math.cos(top/950);
@@ -272,12 +278,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       }
 
+
       group.rotation.x += x;
       
       camera.position.x += 20*x;
       camera.position.z += z;
       camera.position.y += y;
 
+      //Store top value as the previous one
       lastTop = top;
   };
 
