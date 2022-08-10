@@ -4,6 +4,10 @@
 
 @layer components {
 
+    body{
+        @apply text-white;
+    }
+
     .nav-list {
         @apply transition duration-500 hover:scale-105 hover:text-gray-400 basis-1/6;
     }
