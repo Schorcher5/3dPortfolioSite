@@ -185,9 +185,7 @@ p {
   background-color: white;
 }
 
-.fa-brands, .fa-duotone, .fa-solid {
-  position: absolute;
-}
+
 
 .fa-file {
   position: relative;
