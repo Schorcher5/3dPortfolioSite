@@ -11,5 +11,9 @@
     .nav-list {
         @apply transition duration-500 hover:scale-105 hover:text-gray-400 basis-1/6;
     }
+
+    .section-properties{
+        @apply relative my-32 mx-52 px-5 bg-neutral-800/[.5] rounded-lg;
+    }
 }
 
