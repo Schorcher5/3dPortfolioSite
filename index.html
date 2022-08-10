@@ -6,10 +6,8 @@
   <title>Joaquin Cisneros</title>
 
   <!-- Css style sheet and Bootstrap 5 (including scripts)-->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/index.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,56 +31,49 @@
 
   <!-- This is the navbar -->
   <section id="nav-id">
-    <nav class="hide-on-scroll fixed top-0 w-screen h-16 text-white flex px-40 z-30">
-        <a class="navbar-brand" href="#home">Joaquin Cisneros</a>   
-        <div class="collapse navbar-collapse" id="navbarToggler">
-          <ul class="navbar-nav  ms-auto">
-            <li class="nav-item">
-              <a class="nav-link" aria-current="skills-section" href="#skills">Skills</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="work-volunteer-section" href="#projects">Projects</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="projects-section" href="#work-expierince">Work/Volunteer</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="education-section" href="#school">Education</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="extra-stuff-section" href="#extra-stuff">Extra-Stuff</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="contact-section" href="#contact">Contact</a>
-            </li>
-          </ul>
+    <nav class="hide-on-scroll fixed top-0 w-screen h-16 flex px-40 pt-2 z-30 flex-row">
+        <a class="nav-list navbar-brand basis-1/4" href="#home">Joaquin Cisneros</a>   
+        <div class=" p-3 flex flex-row basis-3/4">
+              <a class="nav-list" aria-current="skills-section" href="#skills">Skills</a>  
+              <a class="nav-list" aria-current="work-volunteer-section" href="#projects">Projects</a>
+              <a class="nav-list" aria-current="projects-section" href="#work-expierince">Work/Volunteer</a>
+              <a class="nav-list" aria-current="education-section" href="#school">Education</a>
+              <a class="nav-list" aria-current="extra-stuff-section" href="#extra-stuff">Extra-Stuff</a>
+              <a class="nav-list" aria-current="contact-section" href="#contact">Contact</a>
         </div>
     </nav>
 
   </section>
 
   <!-- Home section -->
-  <section id="home" class="gradient-background promo text-white">
-    <div class="container-fluid row">
-      <div class="text-sm-start col-sm-6 pt-5">
-        <h1 class="title">Hi! I'm Joaquin, or Joe for short</h1>
-        <p class="description">I am a computer science student at UFV and a aspiring software engineer. Learning full-stack/front-end development right now, but hope to do back-end one day!</p>
-        <a href="https://www.linkedin.com/in/joaquin-cisneros-271256225/" class="icon-button btn special-btn" title="linkedin account" aria-label="linkedin"><i class="fa-brands fa-linkedin fa-2xl"></i></a>
-        <a href="https://github.com/Schorcher5?tab=stars" class="btn icon-button special-btn" title="github account" aria-label="github"><i class="fa-brands fa-github fa-2xl"></i></a>
-        <a href="https://devpost.com/Schorcher5?ref_content=user-portfolio&ref_feature=portfolio&ref_medium=global-nav" class="btn icon-button special-btn" title="devpost account" aria-label="devpost"><i class="fa-solid fa-code fa-xl"></i></a>
-        <a href="https://leetcode.com/JoaquinCisneros/" class="btn icon-button special-btn" title="leetcode account" aria-label="leetcode"><img class="fa-solid ic-leetcode" src="./images/leetcode.png" alt="leetcode logo"></a>
-        <div class="resume-btn">
-          <a href="https://drive.google.com/file/d/19W-_uOhtsQ-MD7AQiO6dFIU91ON-t44n/view?usp=sharing" class="btn"><i class="fa-solid fa-file fa-xl"></i> Check out my resume</a>
-        </div>
+  <section id="home" class="section-properties">
+      <h1 class="text-5xl py-5">Hi! I'm Joaquin, or Joe for short</h1>
+      <p class="">I am a computer science student at UFV and a aspiring software engineer. Learning full-stack/front-end development right now, but hope to do back-end one day!</p>
+      <div class="flex flex-row m-4 pr-16 ">
+        <a href="https://www.linkedin.com/in/joaquin-cisneros-271256225/" class="basis-1/10 btn nav-list" title="linkedin account" aria-label="linkedin">
+          <i class="fa-brands fa-linkedin fa-2xl px-4"></i>LinkedIn</a>
+        <span class="basis-1/10 mt-4 ">|</span>
+        <a href="https://github.com/Schorcher5?tab=stars" class="basis-1/10 btn nav-list" title="github account" aria-label="github">
+          <i class="fa-brands fa-github fa-2xl px-4"></i>Github</a>
+        <span class="basis-1/10 mt-4 ">|</span>
+        <a href="https://devpost.com/Schorcher5?ref_content=user-portfolio&ref_feature=portfolio&ref_medium=global-nav" class="basis-1/10 btn nav-list" title="devpost account" aria-label="devpost">
+          <i class="fa-solid fa-code fa-xl px-4"></i>Devpost</a>
+          <span class="basis-1/10 mt-4 ">|</span>
+
+        <a href="https://leetcode.com/JoaquinCisneros/" class="basis-1/10 btn nav-list" title="leetcode account" aria-label="leetcode">
+          <i class="fa-solid fa-laptop-code fa-xl px-4" src="./images/leetcode.png" alt="leetcode logo"></i>Leetcode</a>
+          <span class="basis-1/10 mt-4 ">|</span>
+
+        <a href="https://drive.google.com/file/d/19W-_uOhtsQ-MD7AQiO6dFIU91ON-t44n/view?usp=sharing" class="basis-1/10 btn nav-list">
+          <i class="fa-solid fa-file fa-xl px-4"></i>Check out my resume</a>   
       </div>
-      <div class="home-gif col-sm-6">
-        <img src="images/first.gif" alt="Gif a person programming">
-      </div>
+    <div class="flex justify-center">
+      <img src="images/first.gif" alt="Gif a person programming">
     </div>
   </section>
 
   <!-- Skills section -->
-  <section id="skills" class="text-secondary">
+  <section id="skills" class="section-properties">
     <div class="container-fluid row">
       <div class="text-sm-start col-sm-6 load load-left">
         <h1 class="title">What I Can Do</h1>
@@ -131,9 +122,9 @@
   </section>
 
   <!-- Projects section -->
-  <section id="projects" class="gradient-background promo text-secondary">
+  <section id="projects" class="  ">
     <div class="container-fluid">
-      <h1 class="load title text-white text-sm-start pb-5 ">Here are some of the projects I've worked on</h1>
+      <h1 class="load title  text-sm-start pb-5 ">Here are some of the projects I've worked on</h1>
       <div class="row row-cols-1 row-cols-md-2 g-6 load ">
         <div class="col">
           <div class="card border border-secondary">
@@ -218,7 +209,7 @@
   </section>
 
   <!-- Work experience -->
-  <section id="work-expierince" class="text-secondary">
+  <section id="work-expierince" class="">
 
     <div class="container-fluid">
       <h1 class="load title text-sm-start pb-5">Here is some of my previous work/volunteer experience</h1>
@@ -263,7 +254,7 @@
   </section>
 
   <!-- School -->
-  <section id="school" class="gradient-background text-white promo">
+  <section id="school" class="  ">
 
     <div class="d-flex justify-content-center container-fluid row">
       <h1 class="load text-sm-start title pb-5">Education</h1>
@@ -295,7 +286,7 @@
   </section>
 
   <!-- Extra-Stuff -->
-  <section id="extra-stuff" class="text-secondary">
+  <section id="extra-stuff" class="">
 
     <div class="container-fluid">
       <h1 class="load text-sm-start title pb-5">Some of my hobbies</h1>
@@ -355,7 +346,7 @@
   </section>
 
   <!-- Contact-Me -->
-  <section id="contact" class="gradient-background text-white">
+  <section id="contact" class="relative">
     <div class="container-fluid row">
       <div class="home-text col-sm-6 text-sm-start">
         <h1 class="home-title">Want to get in touch?</h1>
@@ -364,8 +355,8 @@
         </p>
         <div class="">
           <a href="https://www.linkedin.com/in/joaquin-cisneros-271256225/" class="icon-button btn special-btn" title="linkedin account" aria-label="linkedin"><i class="fa-brands fa-linkedin fa-2xl"></i></a>
-          <a href="https://github.com/Schorcher5?tab=stars" class="btn icon-button special-btn" title="github account" aria-label="github"><i class="fa-brands fa-github fa-2xl"></i></a>
-          <a href="https://devpost.com/Schorcher5?ref_content=user-portfolio&ref_feature=portfolio&ref_medium=global-nav" class="btn icon-button special-btn" title="devpost account" aria-label="devpost"><i class="fa-solid fa-code fa-xl"></i></a>
+          <a href="https://github.com/Schorcher5?tab=stars" class="" title="github account" aria-label="github"><i class="fa-brands fa-github fa-2xl"></i></a>
+          <a href="https://devpost.com/Schorcher5?ref_content=user-portfolio&ref_feature=portfolio&ref_medium=global-nav" class="" title="devpost account" aria-label="devpost"><i class="fa-solid fa-code fa-xl"></i></a>
         </div>
 
         <div class="btn bg-white"><i class="fa-brands fa-canadian-maple-leaf fa-xl position-static"></i> Abbotsford BC, Canada</div>
