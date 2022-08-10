@@ -32,6 +32,7 @@ font-family: 'Sacramento', cursive; */
   --resting-low-button: 0;
   --hover-high-button: 0.6rem;
   --hover-low-button: 0.4rem;
+  --section-bg-color: rgba(51, 49, 49, 0.555);
 }
 
 body {
@@ -133,13 +134,13 @@ p {
 /* For navbar scrolling effect */
 .nav-scroll-down {
   transform: translateY(-100%);
-  background-color: #1FAB89;
+  background-color: var(--section-bg-color);
   transition: all 0.3s ease-in-out;
 }
 
 .nav-scroll-up {
   transform: translateY(0);
-  background-color: #1FAB89;
+  background-color: var(--section-bg-color);
   transition: all 0.3s ease-in-out;
 }
 
