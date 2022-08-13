@@ -22,3 +22,6 @@ jobs:
           old_string: "**Write you description here**"
           new_string: ${{ github.event.commits[0].message }}
           get_diff: true
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+
