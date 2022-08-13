@@ -88,14 +88,6 @@ p {
   text-transform: capitalize;
 }
 
-.nav-item {
-  padding: 0 0.6rem;
-}
-
-.nav-link {
-  font-size: 1.0rem;
-}
-
 /* For navbar scrolling effect */
 .nav-scroll-down {
   transform: translateY(-100%);
@@ -171,24 +163,3 @@ p {
 .fa-laptop-code{
   color: orange;
 }
-
-/* Card selectors */
-
-.card {
-  margin-top: 1rem;
-}
-
-.card-text {
-  text-align: left;
-}
-
-.card-title {
-  color: #1FAB89;
-}
-
-.card-header {
-  color: white;
-  font-size: 1.7rem;
-}
-
-
