@@ -24,5 +24,9 @@
         @apply text-4xl py-5;
     }
 
+    .img-style{
+        @apply block w-full border-2 border-cyan-900;
+    }
+
 }
 
