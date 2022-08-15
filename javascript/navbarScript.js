@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded",function(){
-  hideOnScroll = document.querySelector('.hide-on-scroll');
+  let hideOnScroll = document.querySelector('.hide-on-scroll');
   if(hideOnScroll){
     var lastScrollTop = 0;
 
