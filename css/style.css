@@ -148,6 +148,8 @@ p {
   }
 }
 
+/* Link icons */
+
 .fa-file {
   position: relative;
 }
@@ -163,3 +165,30 @@ p {
 .fa-laptop-code{
   color: orange;
 }
+
+.fa-canadian-maple-leaf{
+  color:red
+}
+
+/* Job icons */
+
+.fa-meta{
+  color: #1da1f2;
+}
+
+.fa-calendar{
+  color: coral;
+}
+
+.fa-computer{
+  color: #003E54;
+}
+
+.fa-phone{
+  color: crimson;
+}
+
+.fa-book-open{
+  color:antiquewhite
+}
+
