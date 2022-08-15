@@ -1,4 +1,4 @@
-import '../css/style.css'
+import '../css/index.css'
 
 import * as THREE from 'three';
 import { MathUtils } from 'three';
