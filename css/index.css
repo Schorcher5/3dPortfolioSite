@@ -156,37 +156,37 @@ canvas {
     animation-name: moveUp;
     animation-duration: 0.4s;
     margin-top: var(--hover-high-button);
-    margin-bottom: var(--hover-low-button);
+    padding-bottom: var(--hover-low-button);
   }
   
   .btn:not(:hover) {
     animation-name: moveDown;
     animation-duration: 0.4s;
     margin-top: var(--resting-high-button);
-    margin-bottom: var(--resting-low-button);
+    padding-bottom: var(--resting-low-button);
   }
   
   @keyframes moveUp {
     from {
       margin-top: var(--resting-high-button);
-      margin-bottom: var(--resting-low-button);
+      padding-bottom: var(--resting-low-button);
     }
   
     to {
       margin-top: var(--hover-high-button);
-      margin-bottom: var(--hover-low-button);
+      padding-bottom: var(--hover-low-button);
     }
   }
   
   @keyframes moveDown {
     from {
       margin-top: var(--hover-high-button);
-      margin-bottom: var(--hover-low-button);
+      padding-bottom: var(--hover-low-button);
     }
   
     to {
       margin-top: var(--resting-high-button);
-      margin-bottom: var(--resting-low-button);
+      padding-bottom: var(--resting-low-button);
     }
   }
   
